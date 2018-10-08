@@ -5,11 +5,11 @@ import datetime
 
 
 cmd_pin = 4 
-
+#or 7
 
 def config(): 
 	GPIO.setmode(GPIO.BCM)
-	GPÏO.setup(cmd_pin, GPIO.OUT)
+	GPIO.setup(cmd_pin, GPIO.OUT)
 	
 
 def main() : 
@@ -18,7 +18,7 @@ def main() :
 	return 0
 
 
-if __name__ == “__name__“ : 
+if __name__ == "__name__" :
 	main() 
  
 

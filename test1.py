@@ -16,7 +16,7 @@ import time
 SDI   = 21
 RCLK  = 20
 SRCLK = 16
-
+SDI2  = 26 #in front of 20
 #===============   LED Mode Defne ================
 #	You can define yourself, in binay, and convert it to Hex 
 #	8 bits a group, 0 means off, 1 means on
@@ -36,15 +36,18 @@ def print_msg():
 def setup():
 	GPIO.setmode(GPIO.BCM)    # Number GPIOs by its physical location pin GPIO 21,20 and 16
 	GPIO.setup(SDI, GPIO.OUT)
+	GPIO.setup(SDI2, GPIO.OUT)
 	GPIO.setup(RCLK, GPIO.OUT)
 	GPIO.setup(SRCLK, GPIO.OUT)
 	GPIO.output(SDI, GPIO.LOW)
+	GPIO.output(SDI2, GPIO.LOW)
 	GPIO.output(RCLK, GPIO.LOW)
 	GPIO.output(SRCLK, GPIO.LOW)
 
 def hc595_in(dat):
 	for bit in range(0, 8):	
 		GPIO.output(SDI, 0x80 & (dat << bit))
+		GPIO.output(SDI2, 0x80 & (dat << bit))
 		GPIO.output(SRCLK, GPIO.HIGH)
 		time.sleep(0.05)
 		GPIO.output(SRCLK, GPIO.LOW)

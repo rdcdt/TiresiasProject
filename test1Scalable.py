@@ -1,14 +1,4 @@
 #!/usr/bin/env python
-#================================================
-#
-#	This program is for SunFounder SuperKit for Rpi.
-#
-#	Extend use of 8 LED with 74HC595.
-#
-#	Change the	WhichLeds and sleeptime value under
-#	loop() function to change LED mode and speed.
-#
-#=================================================
 
 import RPi.GPIO as GPIO
 import time
@@ -21,140 +11,58 @@ sleepInOut=0.5
 
 x = 4 #Largeur de l'ecran
 y = 4 #hauteur de l'ecran
-nbMotif=22 #nombre de motif affichable
+nbMotif=2 #nombre de motif affichable
 
 #motifV=[[[0]*x]*y]*nbMotif
 motifV = [[[0 for i in range(x)] for j in range(y)]for z in range(nbMotif)] 
-motifV[0]=[[0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0]] #motif voulu
-motifV[1]=[[1, 1, 1, 1], 
- [1, 1, 1, 1], 
- [1, 1, 1, 1], 
- [1, 1, 1, 1]] #motif voulu
-motifV[2]=[[1, 1, 1, 1], 
- [1, 0, 0, 1], 
- [1, 0, 0, 1], 
- [1, 1, 1, 1]] #motif voulu
-motifV[3]=[[1, 0, 0, 1], 
- [0, 1, 1, 0], 
- [0, 1, 1, 0], 
- [1, 0, 0, 1]] #motif voulu
-motifV[4]=[[0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0]]
-
-motifV[5]=[[1, 0, 0, 0], 
- [1, 0, 0, 0], 
- [1, 0, 0, 0], 
- [1, 0, 0, 0]]
-motifV[6]=[[0, 1, 0, 0], 
- [0, 1, 0, 0], 
- [0, 1, 0, 0], 
- [0, 1, 0, 0]]
-motifV[7]=[[0, 0, 1, 0], 
- [0, 0, 1, 0], 
- [0, 0, 1, 0], 
- [0, 0, 1, 0]]
-motifV[8]=[[0, 0, 0, 1], 
- [0, 0, 0, 1], 
- [0, 0, 0, 1], 
- [0, 0, 0, 1]]
-motifV[9]=[[0, 0, 0, 1], 
- [0, 0, 0, 1], 
- [0, 0, 0, 1], 
- [0, 0, 0, 1]]
-motifV[10]=[[0, 0, 1, 0], 
- [0, 0, 1, 0], 
- [0, 0, 1, 0], 
- [0, 0, 1, 0]]
-motifV[11]=[[0, 1, 0, 0], 
- [0, 1, 0, 0], 
- [0, 1, 0, 0], 
- [0, 1, 0, 0]]
-motifV[12]=[[1, 0, 0, 0], 
- [1, 0, 0, 0], 
- [1, 0, 0, 0], 
- [1, 0, 0, 0]]
-
-motifV[13]=[[0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0]]
-
-motifV[14]=[[1, 1, 1, 1], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0]]
-motifV[15]=[[0, 0, 0, 0], 
- [1, 1, 1, 1], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0]]
-motifV[16]=[[0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [1, 1, 1, 1], 
- [0, 0, 0, 0]]
-motifV[17]=[[0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [1, 1, 1, 1]]
-motifV[18]=[[0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [1, 1, 1, 1]]
-motifV[19]=[[0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [1, 1, 1, 1], 
- [0, 0, 0, 0]]
-motifV[20]=[[0, 0, 0, 0], 
- [1, 1, 1, 1], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0]]
-motifV[21]=[[1, 1, 1, 1], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0], 
- [0, 0, 0, 0]]
-
 
 #motif=[[0]*8]*10 #dans les 10 elements de la premiere dimension sont toutes les shiftregister a afficher. L'autre dimension sert a afficher different motif
-nbShift=int(math.ceil(x*y/8.0))
-print "nbShift"+str(nbShift)
-motif=[[0 for i in range(nbShift)] for j in range(nbMotif)]
-shiftNumber=0
-shiftCpt=0 #max 8 car un shift ne peux pas aller plus loin
-for motifCpt in range(0,nbMotif):
-		shiftNumber=0
-		shiftCpt=0
-		for absc in range(0,x):
-				for ordo in range(0,y):
-						if(shiftCpt>7):
-								shiftCpt=0
-								shiftNumber=shiftNumber+1
-						valeur=motifV[motifCpt][absc][ordo]<<shiftCpt
-						print str(motifCpt)+","+str(shiftNumber)
-						motif[motifCpt][shiftNumber]=motif[motifCpt][shiftNumber] | valeur
-						shiftCpt=shiftCpt+1
-for testaff1 in range(0,nbMotif):
-		valeuraff=""
-		for testaff in range(0,nbShift):
-				valeuraff=valeuraff+","+str(motif[testaff1][testaff])
-		print valeuraff
 
-#exemple de resultat
-#motif[0]=[0xff,0xff] #8bit pour toutes les infos du shift
+def nbShiftCalculate(x,y):
+	nbShift=int(math.ceil(x*y/8.0))
+	print("nbShift"+str(nbShift))
+	return nbShift
+nbShift=nbShiftCalculate(x,y)
+def convertToHexa(motifV,x1,y1,nbMotif1):
+	x=x1
+	y=y1
+	nbMotif=nbMotif1
+	nbShift=nbShiftCalculate(x,y)
+	motif=[[0 for i in range(nbShift)] for j in range(nbMotif)]
+	shiftNumber=0
+	shiftCpt=0 #max 8 car un shift ne peux pas aller plus loin
+	for motifCpt in range(0,nbMotif):
+			shiftNumber=0
+			shiftCpt=0
+			for absc in range(0,x):
+					for ordo in range(0,y):
+							if(shiftCpt>7):
+									shiftCpt=0
+									shiftNumber=shiftNumber+1
+							valeur=motifV[motifCpt][absc][ordo]<<shiftCpt
+							print(str(motifCpt)+","+str(shiftNumber))
+							motif[motifCpt][shiftNumber]=motif[motifCpt][shiftNumber] | valeur
+							shiftCpt=shiftCpt+1
+	for testaff1 in range(0,nbMotif):
+			valeuraff=""
+			for testaff in range(0,nbShift):
+					valeuraff=valeuraff+","+str(motif[testaff1][testaff])
+			print(valeuraff)
 
-#motif[0][2]=0xf0
-#motif[0][3]=0xf0
-#
-#motif[1]=[0x00,0x00]
-#motif[2]=[0xf0,0xf0]
-#motif[3]=[0x0f,0x0f]
+	#exemple de resultat
+	#motif[0]=[0xff,0xff] #8bit pour toutes les infos du shift
 
-#motif[1][2]=0x00
-#motif[1][3]=0x00
+	#motif[0][2]=0xf0
+	#motif[0][3]=0xf0
+	#
+	#motif[1]=[0x00,0x00]
+	#motif[2]=[0xf0,0xf0]
+	#motif[3]=[0x0f,0x0f]
 
+	#motif[1][2]=0x00
+	#motif[1][3]=0x00
+	return motif
+convertToHexa(motifV,x,y,nbMotif)
 #DataOutPut=[26,27,28,29,30,31,32,33,34,35]#liste des pin de data
 
 DataOutPut=[26,21]#liste des pin de data
@@ -179,14 +87,14 @@ LED0 = [0x00,0xff]
 #LED0 = [0x00,0xff]
 #LED0 = [0xff,0x00]	#original mode
 def print_msg():
-	print 'Program is running...'
-	print 'Please press Ctrl+C to end the program...'
+	print('Program is running...')
+	print('Please press Ctrl+C to end the program...')
 
 def setup():
 	GPIO.setmode(GPIO.BCM)    # Number GPIOs by its physical location
 	#GPIO.setup(SDI, GPIO.OUT)
 	for pinSortie in range(0,len(DataOutPut)):
-                GPIO.setup(DataOutPut[pinSortie], GPIO.OUT)
+		GPIO.setup(DataOutPut[pinSortie], GPIO.OUT)
 	GPIO.setup(RCLK, GPIO.OUT)
 	GPIO.setup(SRCLK, GPIO.OUT)
 	
@@ -200,21 +108,21 @@ def hc595_in(dat):
 		GPIO.output(SRCLK, GPIO.LOW)
 		time.sleep(0.01)
 		GPIO.output(SRCLK, GPIO.HIGH)
-                time.sleep(0.01)
+		time.sleep(0.01)
 def hc595_inCustom(idMotif):
 	for bit in range(0,8):
-                for line in range(0,nbShift):
-                        print "line",line
-                        print "idmotif",idMotif
-                        print motif
-                        print motif[idMotif][line]
-						#GPIO.output(26, 0x80 & (1 << bit))
-						#GPIO.output(21, 0x80 & (1 << bit))
-                        GPIO.output(DataOutPut[line], 0x80 & (motif[idMotif][line] << bit))
-                GPIO.output(SRCLK, GPIO.LOW)
-                time.sleep(0.01)
-                GPIO.output(SRCLK, GPIO.HIGH)
-                time.sleep(0.01)
+		for line in range(0,nbShift):
+			print("line",line)
+			print("idmotif",idMotif)
+			print(motif)
+			print(motif[idMotif][line])
+			#GPIO.output(26, 0x80 & (1 << bit))
+			#GPIO.output(21, 0x80 & (1 << bit))
+			GPIO.output(DataOutPut[line], 0x80 & (motif[idMotif][line] << bit))
+		GPIO.output(SRCLK, GPIO.LOW)
+		time.sleep(0.01)
+		GPIO.output(SRCLK, GPIO.HIGH)
+		time.sleep(0.01)
 def hc595_out():
 	GPIO.output(RCLK, GPIO.LOW)
 	time.sleep(0.01)
@@ -227,15 +135,15 @@ def loop():
 	sleeptime = 0.5		# Change speed, lower value, faster speed
 	i = 0
 	while True:
-            #value = WhichLeds[i%len(WhichLeds)]
-	    # hc595_in(value)
-	    hc595_inCustom(i%nbMotif)
-            hc595_out()
-            #print 'update : ' + str(value)
-            print 'Update mystere'
-            time.sleep(sleeptime)
-            i += 1
-            
+		#value = WhichLeds[i%len(WhichLeds)]
+		# hc595_in(value)
+		hc595_inCustom(i%nbMotif)
+		hc595_out()
+		#print 'update : ' + str(value)
+		print('Update mystere')
+		time.sleep(sleeptime)
+		i += 1
+
 	#	for i in range(len(WhichLeds)-1, -1, -1):
 	#		hc595_in(WhichLeds[i])
 	#		hc595_out()
@@ -243,7 +151,7 @@ def loop():
 
 def destroy():   # When program ending, the function is executed.
 	for pinSortie in range(0,len(DataOutPut)):
-               GPIO.output(DataOutPut[pinSortie], GPIO.LOW)
+		GPIO.output(DataOutPut[pinSortie], GPIO.LOW)
 	GPIO.output(SDI, GPIO.LOW)
 	GPIO.output(RCLK, GPIO.LOW)
 	GPIO.output(SRCLK, GPIO.LOW)

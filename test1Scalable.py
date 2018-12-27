@@ -15,7 +15,7 @@ nbMotif=2 #nombre de motif affichable
 
 #motifV=[[[0]*x]*y]*nbMotif
 motifV = [[[0 for i in range(x)] for j in range(y)]for z in range(nbMotif)] 
-
+motif = [[[0 for i in range(x)] for j in range(y)]for z in range(nbMotif)] 
 #motif=[[0]*8]*10 #dans les 10 elements de la premiere dimension sont toutes les shiftregister a afficher. L'autre dimension sert a afficher different motif
 
 def nbShiftCalculate(x,y):
@@ -28,6 +28,7 @@ def convertToHexa(motifV,x1,y1,nbMotif1):
 	y=y1
 	nbMotif=nbMotif1
 	nbShift=nbShiftCalculate(x,y)
+	global motif
 	motif=[[0 for i in range(nbShift)] for j in range(nbMotif)]
 	shiftNumber=0
 	shiftCpt=0 #max 8 car un shift ne peux pas aller plus loin

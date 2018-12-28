@@ -24,6 +24,10 @@ def nbShiftCalculate(x,y):
 	return nbShift
 nbShift=nbShiftCalculate(x,y)
 def convertToHexa(motifV,x1,y1,nbMotif1):
+	global x
+	global y
+	global nbMotif
+	global nbShift
 	x=x1
 	y=y1
 	nbMotif=nbMotif1

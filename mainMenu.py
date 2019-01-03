@@ -61,6 +61,7 @@ def saveGame():
 	theFile.write('\n'.join(contenu))
 	#print(contenu)
 def stopGame():
+	os.system('clear')
 	print("Au revoir "+userName + " :)")
 	saveGame()
 	exit()

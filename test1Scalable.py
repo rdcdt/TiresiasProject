@@ -118,10 +118,10 @@ def hc595_in(dat):
 def hc595_inCustom(idMotif):
 	for bit in range(0,8):
 		for line in range(0,nbShift):
-			#print("line",line)
-			#print("idmotif",idMotif)
-			#print(motif)
-			#print(motif[idMotif][line])
+			print("line",line)
+			print("idmotif",idMotif)
+			print(motif)
+			print(motif[idMotif][line])
 			#GPIO.output(26, 0x80 & (1 << bit))
 			#GPIO.output(21, 0x80 & (1 << bit))
 			GPIO.output(DataOutPut[line], 0x80 & (motif[idMotif][line] << bit))
@@ -140,9 +140,11 @@ def loop():
 	WhichLeds = LED0	# Change Mode, modes from LED0 to LED3
 	sleeptime = 0.5		# Change speed, lower value, faster speed
 	i = 0
-	def theLoop():
+
+  def theLoop():
 		i=1
 	#while True:
+
 		#value = WhichLeds[i%len(WhichLeds)]
 		# hc595_in(value)
 		hc595_inCustom(i%nbMotif)
@@ -153,6 +155,7 @@ def loop():
 		#time.sleep(sleeptime)
 		threading.Timer(sleeptime,theLoop).start()
 	theLoop()
+
 	#	for i in range(len(WhichLeds)-1, -1, -1):
 	#		hc595_in(WhichLeds[i])
 	#		hc595_out()
